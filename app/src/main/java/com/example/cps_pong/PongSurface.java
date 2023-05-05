@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     private PongThread pongThread;
     private Racket racket;
+    private Ball ball;
     private Paint backgroundPaint;
     public PongSurface(Context context){
         super(context);
@@ -20,6 +21,7 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
         backgroundPaint.setColor(Color.BLACK);
         backgroundPaint.setStyle(Paint.Style.FILL);
         racket = new Racket();
+        ball = new Ball();
     }
 
     @Override
@@ -49,6 +51,7 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update(Canvas canvas) {
         racket.update(canvas);
+        ball.update(canvas);
     }
 
     @Override
@@ -56,7 +59,8 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         canvas.drawPaint(backgroundPaint);
-        racket.Draw(canvas);
+        racket.draw(canvas);
+        ball.draw(canvas);
     }
 
 
