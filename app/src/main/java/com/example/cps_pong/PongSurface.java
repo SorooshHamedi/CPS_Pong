@@ -57,8 +57,8 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
         canvas.drawPaint(backgroundPaint);
+
         racket.draw(canvas);
         ball.draw(canvas);
     }

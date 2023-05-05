@@ -15,12 +15,25 @@ public class Ball extends PongObject{
 
     @Override
     public void update(Canvas canvas) {
+        updateGravity(canvas);
+
         cx = canvas.getWidth() / 2.0F;
-        cy += 10;//temp
+        cy += yVelocity;
     }
+
 
     @Override
     public void draw(Canvas canvas) {
         canvas.drawCircle(cx, cy, radius, paint);
+    }
+
+    private float calculateGravity(Canvas canvas) {
+        float factor = (2.0F/3.0F) / (3600.F);
+        return factor * (float)(canvas.getHeight());
+    }
+
+    private void updateGravity(Canvas canvas) {
+        yAcceleration = calculateGravity(canvas);
+        yVelocity += yAcceleration;
     }
 }

@@ -2,10 +2,9 @@ package com.example.cps_pong;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
-
 public class PongThread extends Thread {
     private final float frameRate = 30;
-    private final float frameTime = 1000 / frameRate; //duration of each time in ms
+    private final float frameTime = 1000 / frameRate; //duration of each frame in ms
 
     private PongSurface gameSurface;
     private SurfaceHolder surfaceHolder;
