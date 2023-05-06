@@ -2,6 +2,7 @@ package com.example.cps_pong;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.RectF;
 
 public class Ball extends PongObject{
     private float cx;
@@ -11,20 +12,34 @@ public class Ball extends PongObject{
     public Ball() {
         paint.setColor(Color.WHITE);
         cy = radius;
+        cx =
+        xVelocity = 5;
     }
 
     @Override
     public void update(Canvas canvas) {
-        updateGravity(canvas);
-
-        cx = canvas.getWidth() / 2.0F;
+        yVelocity += yAcceleration;
+        xVelocity += xAcceleration;
+        cx += xVelocity;
         cy += yVelocity;
+
     }
 
+    @Override
+    public void reset(Canvas canvas) {
+        cx = canvas.getWidth() / 2.0F;
+        cy = radius;
+        yAcceleration = calculateGravity(canvas);
+        xAcceleration = 0;
+        yVelocity = 0;
+        xVelocity = 0;
+    }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle(cx, cy, radius, paint);
+        if(isVisible){
+            canvas.drawCircle(cx, cy, radius, paint);
+        }
     }
 
     private float calculateGravity(Canvas canvas) {
@@ -32,8 +47,45 @@ public class Ball extends PongObject{
         return factor * (float)(canvas.getHeight());
     }
 
-    private void updateGravity(Canvas canvas) {
-        yAcceleration = calculateGravity(canvas);
-        yVelocity += yAcceleration;
+
+    @Override
+    public RectF getHitbox() {
+        return new RectF(cx - (radius/2), cy - (radius/2), cx + (radius/2), cy + (radius/2));
+    }
+
+    @Override
+    public void handleCollisionWithObject(PongObject a) {
+        //flat racket collision
+        yVelocity *= -1.0F;
+        //TODO collision with racket at an angle
+    }
+
+    public void handleCollisionWithWall(Canvas canvas) {
+        RectF hitbox = this.getHitbox();
+        boolean collides = false;
+        if(hitbox.left <= 0) {
+            xVelocity *= -1.0F;
+            setVisible(false);
+            collides = true;
+        }
+        if(hitbox.top <= 0) {
+            yVelocity *= -1.0F;
+            setVisible(false);
+            collides = true;
+        }
+        if(hitbox.right >= canvas.getWidth()) {
+            xVelocity *= -1.0F;
+            setVisible(false);
+            collides = true;
+        }
+        if(hitbox.bottom >= canvas.getHeight()) {
+            yVelocity *= -1.0F;
+            setVisible(false);
+            collides = true;
+        }
+
+        if(!collides) {
+            setVisible(true);
+        }
     }
 }

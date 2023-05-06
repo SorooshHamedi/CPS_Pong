@@ -12,12 +12,14 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     private Racket racket;
     private Ball ball;
     private Paint backgroundPaint;
+    private boolean gameStart;
     public PongSurface(Context context){
         super(context);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
 
         backgroundPaint = new Paint();
+        gameStart = true;
         backgroundPaint.setColor(Color.BLACK);
         backgroundPaint.setStyle(Paint.Style.FILL);
         racket = new Racket();
@@ -50,8 +52,17 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update(Canvas canvas) {
-        racket.update(canvas);
-        ball.update(canvas);
+        if(gameStart) {
+            racket.reset(canvas);
+            ball.reset(canvas);
+            gameStart = false;
+        }
+        else {
+            CollisionHandler.twoObjectCollision(ball, racket);
+            ball.handleCollisionWithWall(canvas);
+            racket.update(canvas);
+            ball.update(canvas);
+        }
     }
 
     @Override
