@@ -1,5 +1,6 @@
 package com.example.cps_pong;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,16 +14,18 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     private Ball ball;
     private Paint backgroundPaint;
     private boolean gameStart;
-    public PongSurface(Context context){
+
+    private RacketMotionHandler racketMotionHandler;
+    public PongSurface(Context context, Activity activity){
         super(context);
         this.setFocusable(true);
         this.getHolder().addCallback(this);
-
         backgroundPaint = new Paint();
         gameStart = true;
         backgroundPaint.setColor(Color.BLACK);
         backgroundPaint.setStyle(Paint.Style.FILL);
         racket = new Racket();
+        racketMotionHandler= new RacketMotionHandler(activity,racket);
         ball = new Ball();
     }
 
@@ -58,6 +61,7 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
             gameStart = false;
         }
         else {
+
             CollisionHandler.twoObjectCollision(ball, racket);
             ball.handleCollisionWithWall(canvas);
             racket.update(canvas);

@@ -10,7 +10,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout)
         linearLayout = findViewById(R.id.idRLView)
-        val pongSurface = PongSurface(this)
+        val pongSurface = PongSurface(this,this);
         linearLayout.addView(pongSurface)
     }
 }
