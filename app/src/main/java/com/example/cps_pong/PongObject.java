@@ -13,8 +13,10 @@ public abstract class PongObject {
     
     protected float xVelocity = 0;
     protected float yVelocity = 0;
-    public PongObject() {
+    protected float frameRate;
+    public PongObject(float frameRate1) {
         paint = new Paint();
+        frameRate = frameRate1;
     }
 
     public abstract void update(Canvas canvas);

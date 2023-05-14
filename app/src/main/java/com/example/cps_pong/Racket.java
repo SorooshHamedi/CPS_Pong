@@ -1,26 +1,36 @@
 package com.example.cps_pong;
 
-import static java.lang.Math.abs;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.widget.Toast;
+import android.util.Log;
 
 public class Racket extends PongObject {
     float pixelPerMeter;
-    public Racket() {
-        paint.setColor(Color.BLUE);
+    public Racket(float frameRate1) {
+        super(frameRate1);
+        paint.setColor(Color.argb(255,184,53,74));
     }
 
     @Override
     public void update(Canvas canvas) {
-        this.xVelocity+=this.xAcceleration*(0.03333);
-        leftSide += xVelocity*(0.03333)*pixelPerMeter+0.5F*xAcceleration*(0.001111)*pixelPerMeter;
+        this.xVelocity += this.xAcceleration * (1.0F / frameRate);
+        //leftSide += xVelocity * (1.0F / frameRate) * pixelPerMeter + 0.5F * xAcceleration * (0.001111) * pixelPerMeter;
+        leftSide += xVelocity * (1.0F / frameRate);
+        if(leftSide > canvas.getWidth()) {
+            leftSide = canvas.getWidth();
+            xVelocity = 0;
+        }
+        else if(leftSide < -width){
+            leftSide = -width;
+            xVelocity = 0;
+        }
+
     }
 
-    public void updateVelocity(float acceleration){
-        this.xAcceleration=acceleration;
+    public void updateAcceleration(float acceleration, float dpi){
+
+        this.xAcceleration = acceleration * (1.0F / 2.54F) * dpi;
     }
 
     @Override
@@ -34,6 +44,9 @@ public class Racket extends PongObject {
     }
     @Override
     public void draw(Canvas canvas) {
+        Log.e("RacketMovement", String.format("Location: %f", leftSide));
+        Log.e("RacketMovement", String.format("Velocity: %f", xVelocity));
+        Log.e("RacketMovement", String.format("Acceleration: %f", xAcceleration));
         if(isVisible) {
             canvas.drawRect(leftSide, topSide, leftSide + width, topSide + height, paint);
         }
@@ -50,10 +63,6 @@ public class Racket extends PongObject {
 
     @Override
     public void handleCollisionWithObject(PongObject object) {
-
-    }
-
-    public void move(){
 
     }
 
