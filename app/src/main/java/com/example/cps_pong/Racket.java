@@ -3,17 +3,31 @@ package com.example.cps_pong;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
+import android.util.Log;
+import android.widget.Toast;
 
 public class Racket extends PongObject {
 
-    public Racket() {
-        paint.setColor(Color.BLUE);
+    public Racket(int frameRate1) {
+        super(frameRate1);
+        paint.setColor(Color.argb(255,184,53,74));
     }
+
 
     @Override
     public void update(Canvas canvas) {
-        leftSide += xVelocity;
-        topSide += yVelocity;
+    }
+
+    /**
+     * updates the Racket's position according to the phone's horizontal movement
+     * @param canvas
+     * @param horizontalMovementFactor
+     * Phone's movement as a ratio.
+     *
+     * The formula: horizontal movement in cm / practiceArea's width in cm
+     */
+    public void update(Canvas canvas, float horizontalMovementFactor) {
+        leftSide += horizontalMovementFactor * canvas.getWidth();
     }
 
     @Override
@@ -43,5 +57,27 @@ public class Racket extends PongObject {
     @Override
     public void handleCollisionWithObject(PongObject object) {
 
+    }
+
+    public void updateXAcceleration(float newXAcceleration) {
+        xAcceleration = newXAcceleration;
+    }
+
+    @Override
+    public void handleCollisionWithWall(Canvas canvas) {
+        RectF hitbox = getHitbox();
+        boolean collides = false;
+        if(hitbox.left <= 0) {
+            setVisible(false);
+            collides = true;
+        }
+        if(hitbox.right >= canvas.getWidth()) {
+            setVisible(false);
+            collides = true;
+        }
+
+        if(!collides) {
+            setVisible(true);
+        }
     }
 }

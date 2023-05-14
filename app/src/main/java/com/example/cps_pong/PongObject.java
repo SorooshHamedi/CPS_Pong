@@ -13,8 +13,10 @@ public abstract class PongObject {
     
     protected float xVelocity = 0;
     protected float yVelocity = 0;
-    public PongObject() {
+    final protected float frameRate;
+    public PongObject(int frameRate1) {
         paint = new Paint();
+        frameRate = frameRate1;
     }
 
     public abstract void update(Canvas canvas);
@@ -30,5 +32,6 @@ public abstract class PongObject {
     public boolean isInvisible() {
         return isVisible == false;
     }
+    public abstract void handleCollisionWithWall(Canvas canvas);
 
 }

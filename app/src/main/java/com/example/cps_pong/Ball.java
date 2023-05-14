@@ -9,7 +9,8 @@ public class Ball extends PongObject{
     private float cy;
     private final float radius = 30;
 
-    public Ball() {
+    public Ball(int frameRate1) {
+        super(frameRate1);
         paint.setColor(Color.WHITE);
         cy = radius;
         cx =
@@ -20,8 +21,8 @@ public class Ball extends PongObject{
     public void update(Canvas canvas) {
         yVelocity += yAcceleration;
         xVelocity += xAcceleration;
-        cx += xVelocity;
-        cy += yVelocity;
+        cx += xVelocity * (1.0F / frameRate);
+        cy += yVelocity * (1.0F / frameRate);
 
     }
 
@@ -32,7 +33,7 @@ public class Ball extends PongObject{
         yAcceleration = calculateGravity(canvas);
         xAcceleration = 0;
         yVelocity = 0;
-        xVelocity = 0;
+        xVelocity = 10;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class Ball extends PongObject{
     }
 
     private float calculateGravity(Canvas canvas) {
-        float factor = (2.0F/3.0F) / (3600.F);
+        float factor = (2.0F/3.0F) / (frameRate * frameRate);
         return factor * (float)(canvas.getHeight());
     }
 
@@ -60,6 +61,7 @@ public class Ball extends PongObject{
         //TODO collision with racket at an angle
     }
 
+    @Override
     public void handleCollisionWithWall(Canvas canvas) {
         RectF hitbox = this.getHitbox();
         boolean collides = false;
