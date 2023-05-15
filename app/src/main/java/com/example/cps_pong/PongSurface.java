@@ -19,6 +19,8 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     private float xPhone;
     private float phoneXVelocity;
     private float phoneXAcceleration;
+    private float phoneZAngularVelocity;
+    private float phoneAngle;
 
     public PongSurface(Context context){
         super(context);
@@ -42,6 +44,9 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
         pongThread.start();
     }
 
+    public void updateZVelocity(float zVelocity) {
+        phoneZAngularVelocity = zVelocity;
+    }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
@@ -66,6 +71,8 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
             xPhone = practiceAreaSize / 2.0F;
             phoneXVelocity = 0;
             phoneXAcceleration = 0;
+            phoneAngle = 0;
+            phoneZAngularVelocity = 0;
         }
         else {
 
@@ -73,6 +80,7 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
             Log.e("PhoneMovement", String.format("Location: %f", xPhone));
             Log.e("PhoneMovement", String.format("Velocity: %f", phoneXVelocity));
             Log.e("PhoneMovement", String.format("Acceleration: %f", phoneXAcceleration));
+            racket.setAngularVelocity(phoneZAngularVelocity);
             racket.updateAcceleration(phoneXAcceleration, getResources().getDisplayMetrics().densityDpi);
             CollisionHandler.twoObjectCollision(ball, racket);
             ball.handleCollisionWithWall(canvas);
@@ -90,6 +98,7 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
         ball.draw(canvas);
     }
     private void updatePhoneMovement(){
+        phoneAngle += phoneZAngularVelocity * (1.0F / frameRate);
         phoneXVelocity += phoneXAcceleration * (1.0F / frameRate);
         xPhone += phoneXVelocity * (1.0F / frameRate);
         if(phoneXVelocity > 0) {

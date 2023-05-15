@@ -6,7 +6,8 @@ import android.graphics.RectF;
 import android.util.Log;
 
 public class Racket extends PongObject {
-    float pixelPerMeter;
+    private float angularVelocity;
+    private float angle;
     public Racket(float frameRate1) {
         super(frameRate1);
         paint.setColor(Color.argb(255,184,53,74));
@@ -14,6 +15,7 @@ public class Racket extends PongObject {
 
     @Override
     public void update(Canvas canvas) {
+        angle += angularVelocity * (1.0F / frameRate);
         this.xVelocity += this.xAcceleration * (1.0F / frameRate);
         //leftSide += xVelocity * (1.0F / frameRate) * pixelPerMeter + 0.5F * xAcceleration * (0.001111) * pixelPerMeter;
         leftSide += xVelocity * (1.0F / frameRate);
@@ -35,7 +37,6 @@ public class Racket extends PongObject {
 
     @Override
     public void reset(Canvas canvas) {
-        pixelPerMeter =canvas.getWidth()/0.5F;
         width = canvas.getWidth() / 3.0F;
         leftSide = (canvas.getWidth() - width) / 2.0F;
         topSide = (float) ((canvas.getHeight() * 0.75));
@@ -48,7 +49,10 @@ public class Racket extends PongObject {
         Log.e("RacketMovement", String.format("Velocity: %f", xVelocity));
         Log.e("RacketMovement", String.format("Acceleration: %f", xAcceleration));
         if(isVisible) {
+            float angleInDegrees = angle * 180.F / (float)(Math.PI);
+            canvas.rotate(angleInDegrees, getHitbox().centerX(), getHitbox().centerY());
             canvas.drawRect(leftSide, topSide, leftSide + width, topSide + height, paint);
+            canvas.restore();
         }
     }
     private float leftSide;
@@ -64,6 +68,10 @@ public class Racket extends PongObject {
     @Override
     public void handleCollisionWithObject(PongObject object) {
 
+    }
+
+    public void setAngularVelocity(float angularVelocity1) {
+        angularVelocity = angularVelocity1;
     }
 
 

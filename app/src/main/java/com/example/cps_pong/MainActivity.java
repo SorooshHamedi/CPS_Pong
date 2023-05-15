@@ -63,7 +63,7 @@ public class MainActivity  extends ComponentActivity {
     private SensorEventListener gyroscopeListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
-
+            pongSurface.updateZVelocity(event.values[2]);
         }
 
         @Override
