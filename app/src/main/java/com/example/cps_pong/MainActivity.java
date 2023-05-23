@@ -37,21 +37,11 @@ public class MainActivity  extends ComponentActivity {
         }
     }
 
+
     private SensorEventListener accelerometerListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
-            final float alpha = 0.8F;
-            float gravity[] = new float[3];
-            float linear_acceleration[] = new float[3];
-            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-            linear_acceleration[0] = event.values[0] - gravity[0];
-            linear_acceleration[1] = event.values[1] - gravity[1];
-            linear_acceleration[2] = event.values[2] - gravity[2];
             pongSurface.updatePhoneXAcceleration(event.values[0]);
-            //Toast.makeText(MainActivity.this, String.format("xVal: %f", linear_acceleration[2]), Toast.LENGTH_SHORT).show();
         }
 
         @Override

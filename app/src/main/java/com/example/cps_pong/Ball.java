@@ -13,7 +13,6 @@ public class Ball extends PongObject{
         super(frameRate1);
         paint.setColor(Color.WHITE);
         cy = radius;
-        cx =
         xVelocity = 5;
     }
 
@@ -57,8 +56,13 @@ public class Ball extends PongObject{
     @Override
     public void handleCollisionWithObject(PongObject a) {
         //flat racket collision
-        yVelocity *= -1.0F;
+        //yVelocity *= -1.0F;
         //TODO collision with racket at an angle
+        float angle = ((Racket) a).getAngle() * 2.0F;
+        float xVelocityPrior = xVelocity;
+        float yVelocityPrior = yVelocity;
+        xVelocity = xVelocityPrior * ((float) Math.cos(angle)) + yVelocityPrior * ((float)Math.sin(angle));
+        yVelocity = (-xVelocityPrior) * ((float) Math.sin(angle)) + (-yVelocityPrior) * ((float) Math.cos(angle));
     }
 
     public void handleCollisionWithWall(Canvas canvas) {

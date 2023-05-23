@@ -9,7 +9,6 @@ public class PongThread extends Thread {
     private PongSurface gameSurface;
     private SurfaceHolder surfaceHolder;
     private boolean running;
-
     public PongThread(PongSurface gameSurface1, SurfaceHolder surfaceHolder1, float frameRate1) {
         gameSurface = gameSurface1;
         surfaceHolder = surfaceHolder1;
