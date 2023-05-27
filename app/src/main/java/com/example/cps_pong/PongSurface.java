@@ -42,6 +42,11 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                if(racket.contains(event.getX(), event.getY())) {
+                    gameStart = true;
+                }
+            }
             return false;
         }
     };

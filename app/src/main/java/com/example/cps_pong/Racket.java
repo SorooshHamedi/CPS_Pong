@@ -78,4 +78,7 @@ public class Racket extends PongObject {
     public float getAngle() {
         return angle;
     }
+    public boolean contains(float x, float y) {
+        return getHitbox().contains(x, y);
+    }
 }
