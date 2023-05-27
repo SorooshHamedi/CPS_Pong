@@ -53,7 +53,10 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void updatePhoneXAcceleration(float xValue) {
-        phoneXAcceleration = xValue * 100.F * 0.2F;
+        phoneXAcceleration = xValue * 100.F;
+       /* if(phoneXAcceleration * (1.0F/ frameRate) * (1.0F / frameRate) < 0.5) {
+            phoneXAcceleration = 0;
+        }*/
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -117,7 +120,7 @@ public class PongSurface extends SurfaceView implements SurfaceHolder.Callback {
     private void updatePhoneMovement(){
         phoneAngle += phoneZAngularVelocity * (1.0F / frameRate);
         phoneXVelocity += phoneXAcceleration * (1.0F / frameRate);
-        xPhone +=  phoneXVelocity * (1.0F / frameRate);
+        xPhone +=  0.5F * phoneXAcceleration * (1.0F/frameRate);
         if(xPhone > practiceAreaSize) {
             xPhone = practiceAreaSize;
             phoneXVelocity = 0;

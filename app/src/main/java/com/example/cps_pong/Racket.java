@@ -18,7 +18,7 @@ public class Racket extends PongObject {
     public void update(Canvas canvas) {
         angle += angularVelocity * (1.0F / frameRate);
         xVelocity += xAcceleration * (1.0F / frameRate);
-        leftSide += xVelocity * (1.0F /frameRate);
+        leftSide += xAcceleration * (1.0F/frameRate) * (1.0F /frameRate);
         if(leftSide > canvas.getWidth()) {
             leftSide = canvas.getWidth();
             xVelocity = 0;
